@@ -8,12 +8,10 @@ namespace BMW_ONBOARDING_SYSTEM.Dtos
     {
         [Required]
         public string Name { get; set; }
-        [Required]
-        public int PassMarkPercentage { get; set; }
+     
         [Required]
         public DateTime DueDate { get; set; }
-        [Required]
-        public int NumberOfQuestions { get; set; }
+       
 
         [Required]
         public string OutcomeId { get; set; }

@@ -8,21 +8,18 @@ namespace BMW_ONBOARDING_SYSTEM.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Achievement",
+                name: "AchievementTypes",
                 columns: table => new
                 {
-                    AchievementID = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AchievementDate = table.Column<DateTime>(type: "datetime", nullable: true),
-                    AchievementTypeID = table.Column<int>(nullable: true),
-                    OnboarderID = table.Column<int>(nullable: true),
-                    CourseID = table.Column<int>(nullable: true),
-                    QuizID = table.Column<int>(nullable: true),
-                    MarkAchieved = table.Column<decimal>(type: "decimal(18, 0)", nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    MinMark = table.Column<int>(nullable: false),
+                    MaxMark = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Achievement", x => x.AchievementID);
+                    table.PrimaryKey("PK_AchievementTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,19 +69,6 @@ namespace BMW_ONBOARDING_SYSTEM.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Badge",
-                columns: table => new
-                {
-                    BadgeID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BadgeDecription = table.Column<string>(unicode: false, maxLength: 50, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Badge", x => x.BadgeID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "City",
                 columns: table => new
                 {
@@ -118,7 +102,7 @@ namespace BMW_ONBOARDING_SYSTEM.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CourseName = table.Column<string>(maxLength: 255, nullable: true),
                     CourseDescription = table.Column<string>(maxLength: 255, nullable: true),
-                    CourseDueDate = table.Column<DateTime>(nullable: true)
+                    EndDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -410,26 +394,6 @@ namespace BMW_ONBOARDING_SYSTEM.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserRole", x => x.UserRoleID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AchievementType",
-                columns: table => new
-                {
-                    AchievementTypeID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AchievementTypeDescription = table.Column<string>(maxLength: 50, nullable: true),
-                    BadgeID = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AchievementType", x => x.AchievementTypeID);
-                    table.ForeignKey(
-                        name: "FK_AchievementType_Badge",
-                        column: x => x.BadgeID,
-                        principalTable: "Badge",
-                        principalColumn: "BadgeID",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -735,9 +699,7 @@ namespace BMW_ONBOARDING_SYSTEM.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 255, nullable: true),
-                    PassMarkPercentage = table.Column<int>(nullable: false),
                     DueDate = table.Column<DateTime>(nullable: false),
-                    NumberOfQuestions = table.Column<int>(nullable: false),
                     LessonOutcomeID = table.Column<int>(nullable: false),
                     QuestionBankId = table.Column<int>(nullable: false)
                 },
@@ -779,10 +741,55 @@ namespace BMW_ONBOARDING_SYSTEM.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Achievements",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MarkAchieved = table.Column<double>(nullable: false),
+                    DateAchieved = table.Column<DateTime>(nullable: false),
+                    OnboarderId = table.Column<int>(nullable: false),
+                    QuizId = table.Column<int>(nullable: false),
+                    AchievementTypeId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Achievements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Achievements_AchievementTypes_AchievementTypeId",
+                        column: x => x.AchievementTypeId,
+                        principalTable: "AchievementTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Achievements_Onboarder_OnboarderId",
+                        column: x => x.OnboarderId,
+                        principalTable: "Onboarder",
+                        principalColumn: "OnboarderID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Achievements_Quizzes_QuizId",
+                        column: x => x.QuizId,
+                        principalTable: "Quizzes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_AchievementType_BadgeID",
-                table: "AchievementType",
-                column: "BadgeID");
+                name: "IX_Achievements_AchievementTypeId",
+                table: "Achievements",
+                column: "AchievementTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Achievements_OnboarderId",
+                table: "Achievements",
+                column: "OnboarderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Achievements_QuizId",
+                table: "Achievements",
+                column: "QuizId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AuditLog_UserID",
@@ -883,10 +890,7 @@ namespace BMW_ONBOARDING_SYSTEM.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Achievement");
-
-            migrationBuilder.DropTable(
-                name: "AchievementType");
+                name: "Achievements");
 
             migrationBuilder.DropTable(
                 name: "ActiveLog");
@@ -958,13 +962,13 @@ namespace BMW_ONBOARDING_SYSTEM.Migrations
                 name: "QuestionCategory");
 
             migrationBuilder.DropTable(
-                name: "Quizzes");
-
-            migrationBuilder.DropTable(
                 name: "Suburb");
 
             migrationBuilder.DropTable(
-                name: "Badge");
+                name: "AchievementTypes");
+
+            migrationBuilder.DropTable(
+                name: "Quizzes");
 
             migrationBuilder.DropTable(
                 name: "User");

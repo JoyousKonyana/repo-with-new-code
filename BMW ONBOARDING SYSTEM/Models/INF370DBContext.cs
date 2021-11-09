@@ -18,21 +18,12 @@ namespace BMW_ONBOARDING_SYSTEM.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=.;Database=INF 3705;Trusted_Connection=True;");
-            }
+          
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AchievementType>(entity =>
-            {
-                entity.HasOne(d => d.Badge)
-                    .WithMany(p => p.AchievementType)
-                    .HasForeignKey(d => d.BadgeId)
-                    .HasConstraintName("FK_AchievementType_Badge");
-            });
+           
 
             modelBuilder.Entity<ActiveLog>(entity =>
             {
@@ -61,10 +52,7 @@ namespace BMW_ONBOARDING_SYSTEM.Models
                     .HasConstraintName("FK_AuditLog_User");
             });
 
-            modelBuilder.Entity<Badge>(entity =>
-            {
-                entity.Property(e => e.BadgeDecription).IsUnicode(false);
-            });
+       
 
             modelBuilder.Entity<City>(entity =>
             {
@@ -195,12 +183,6 @@ namespace BMW_ONBOARDING_SYSTEM.Models
                     .HasForeignKey(d => d.EquipmentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Onboarder__Equip__03F0984C");
-
-                //entity.HasOne(d => d.)
-                //    .WithMany(p => p.OnboarderEquipment)
-                //    .HasForeignKey(d => d.Onboarder)
-                //    .OnDelete(DeleteBehavior.ClientSetNull)
-                //    .HasConstraintName("FK__Onboarder__Onboa__04E4BC85");
             });
 
             modelBuilder.Entity<Otp>(entity =>
@@ -260,18 +242,15 @@ namespace BMW_ONBOARDING_SYSTEM.Models
 
             OnModelCreatingPartial(modelBuilder);
 
-
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
-        public virtual DbSet<Achievement> Achievement { get; set; }
-        public virtual DbSet<AchievementType> AchievementType { get; set; }
+     
         public virtual DbSet<ActiveLog> ActiveLog { get; set; }
         public virtual DbSet<Address> Address { get; set; }
         public virtual DbSet<ArchiveStatus> ArchiveStatus { get; set; }
         public virtual DbSet<AuditLog> AuditLog { get; set; }
-        public virtual DbSet<Badge> Badge { get; set; }
         public virtual DbSet<City> City { get; set; }
         public virtual DbSet<Country> Country { get; set; }
         public virtual DbSet<Course> Course { get; set; }
@@ -310,6 +289,8 @@ namespace BMW_ONBOARDING_SYSTEM.Models
         public DbSet<Question> Questions { get; set; }
         public DbSet<QuestionAnswerOption> QuestionAnswerOptions { get; set; }
         public virtual DbSet<Quiz> Quizzes { get; set; }
+        public virtual DbSet<Achievement> Achievements { get; set; }
+        public virtual DbSet<AchievementType> AchievementTypes { get; set; }
 
 
 

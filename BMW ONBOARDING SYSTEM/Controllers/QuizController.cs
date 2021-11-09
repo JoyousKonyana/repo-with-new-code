@@ -58,8 +58,6 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
                 Name = model.Name,
                 LessonOutcomeID = isOutcomeInDb.LessonOutcomeID,
                 QuestionBankId = isBankInDb.Id,
-                NumberOfQuestions = model.NumberOfQuestions,
-                PassMarkPercentage = model.PassMarkPercentage,
                 DueDate = model.DueDate
             };
 
@@ -81,8 +79,6 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
                     Id = item.Id,
                     Name = item.Name,
                     DueDate = item.DueDate.ToString("dd/MM/yyyy"),
-                    PassMarkPercentage = item.PassMarkPercentage,
-                    NumberOfQuestions = item.NumberOfQuestions,
                     QuestionBankId = item.QuestionBank.Id,
                     QuestionBankName = item.QuestionBank.Name,
                     LessonOutcomeId = item.LessonOutcome.LessonOutcomeID,
@@ -113,8 +109,6 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
                     Id = item.Id,
                     Name = item.Name,
                     DueDate = item.DueDate.ToString("dd/MM/yyyy"),
-                    PassMarkPercentage = item.PassMarkPercentage,
-                    NumberOfQuestions = item.NumberOfQuestions,
                     QuestionBankId = item.QuestionBank.Id,
                     QuestionBankName = item.QuestionBank.Name,
                     LessonOutcomeId = item.LessonOutcome.LessonOutcomeID,
@@ -137,8 +131,6 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
                     Id = item.Id,
                     Name = item.Name,
                     DueDate = item.DueDate.ToString("dd/MM/yyyy"),
-                    PassMarkPercentage = item.PassMarkPercentage,
-                    NumberOfQuestions = item.NumberOfQuestions,
                     Questions = item.QuestionBank
                         .Questions
                         .Where(question => question.AnswerOptions.Count >= 2)
@@ -181,8 +173,7 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
                 .Include(item => item.LessonOutcome)
                 .ThenInclude(item => item.Lesson)
                 .ThenInclude(item => item.Course)
-                .Where(item => item.Id == model.QuizId)
-                .FirstOrDefault();
+                .FirstOrDefault(item => item.Id == model.QuizId);
 
             if (quizInDb == null)
             {
@@ -225,28 +216,28 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
                 }
             }
 
-            var OnberderPercentage = (count / model.QuestionsAndOptions.Count) * 100;
+            //var OnberderPercentage = (count / model.QuestionsAndOptions.Count) * 100;
 
-            if (OnberderPercentage < quizInDb.PassMarkPercentage)
-            {
-                message = "You did not meet the minimum mark required to pass.";
-                return BadRequest(new { message });
-            }
-            if (OnberderPercentage >= quizInDb.PassMarkPercentage)
-            {
-                var onboarderAchivement = new Achievement()
-                {
-                    CourseId = quizInDb.LessonOutcome.Lesson.CourseID,
-                    OnboarderId = onboarderid,
-                    MarkAchieved = OnberderPercentage,
-                    AchievementDate = DateTime.Now,
-                    AchievementTypeId = 1,
-                    QuizId = quizInDb.Id
+            //if (OnberderPercentage < quizInDb.PassMarkPercentage)
+            //{
+            //    message = "You did not meet the minimum mark required to pass.";
+            //    return BadRequest(new { message });
+            //}
+            //if (OnberderPercentage >= quizInDb.PassMarkPercentage)
+            //{
+            //    var onboarderAchivement = new Achievement()
+            //    {
+            //        CourseId = quizInDb.LessonOutcome.Lesson.CourseID,
+            //        OnboarderId = onboarderid,
+            //        MarkAchieved = OnberderPercentage,
+            //        AchievementDate = DateTime.Now,
+            //        AchievementTypeId = 1,
+            //        QuizId = quizInDb.Id
 
-                };
-                _context.Achievement.Add(onboarderAchivement);
-                _context.SaveChanges();
-            }
+            //    };
+            //    _context.Achievement.Add(onboarderAchivement);
+            //    _context.SaveChanges();
+            //}
 
             return Ok();
 

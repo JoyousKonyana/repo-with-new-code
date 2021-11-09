@@ -5,26 +5,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BMW_ONBOARDING_SYSTEM.Models
 {
-    public partial class Achievement
+    public class Achievement
     {
-        [Key]
-        [Column("AchievementID")]
-        public int AchievementId { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime? AchievementDate { get; set; }
-    
-        [Column("OnboarderID")]
-        public int? OnboarderId { get; set; }
-        [Column("CourseID")]
-        public int? CourseId { get; set; }
-        [Column("QuizID")]
-        public int? QuizId { get; set; }
-        [Column(TypeName = "decimal(18, 0)")]
-        public decimal? MarkAchieved { get; set; }
 
-        [Column("AchievementTypeID")]
-        public int? AchievementTypeId { get; set; }
+        public int Id { get; set; }
+        public double MarkAchieved { get; set; }
+        public DateTime DateAchieved { get; set; }
+
+        public virtual Onboarder Onboarder { get; set; }
+        public int OnboarderId { get; set; }
+     
+        public virtual Quiz Quiz { get; set; }
+        public int QuizId { get; set; }
+
         public virtual AchievementType AchievementType { get; set; }
-       
+
+        public int AchievementTypeId { get; set; }
+
     }
 }

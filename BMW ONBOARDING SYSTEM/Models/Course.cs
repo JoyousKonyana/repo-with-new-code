@@ -6,12 +6,6 @@ namespace BMW_ONBOARDING_SYSTEM.Models
 {
     public class Course
     {
-        public Course()
-        {
-            Lessons = new List<Lesson>();
-            OnBoarders = new List<OnboarderCourseEnrollment>();
-        }
-
         [Key]
         public int CourseID { get; set; }
 
@@ -21,10 +15,16 @@ namespace BMW_ONBOARDING_SYSTEM.Models
         [StringLength(255)]
         public string CourseDescription { get; set; }
 
-        public DateTime? CourseDueDate { get; set; }
+        public DateTime EndDate { get; set; }
 
         public virtual List<Lesson> Lessons { get; set; }
 
         public virtual List<OnboarderCourseEnrollment> OnBoarders { get; set; }
+
+        public Course()
+        {
+            Lessons = new List<Lesson>();
+            OnBoarders = new List<OnboarderCourseEnrollment>();
+        }
     }
 }

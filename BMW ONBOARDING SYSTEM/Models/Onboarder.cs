@@ -7,11 +7,7 @@ namespace BMW_ONBOARDING_SYSTEM.Models
 {
     public class Onboarder
     {
-        public Onboarder()
-        {
-            CourseEnrollments = new List<OnboarderCourseEnrollment>();
-            OnboarderEquipment = new HashSet<OnboarderEquipment>();
-        }
+
 
         [Key]
         public int OnboarderID { get; set; }
@@ -23,5 +19,15 @@ namespace BMW_ONBOARDING_SYSTEM.Models
         public virtual List<OnboarderCourseEnrollment> CourseEnrollments { get; set; }
 
         public virtual ICollection<OnboarderEquipment> OnboarderEquipment { get; set; }
+
+        public virtual List<Achievement> Achievements { get; set; }
+
+        public Onboarder()
+        {
+            CourseEnrollments = new List<OnboarderCourseEnrollment>();
+            OnboarderEquipment = new HashSet<OnboarderEquipment>();
+            Achievements = new List<Achievement>();
+        }
+
     }
 }

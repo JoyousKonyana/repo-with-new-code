@@ -66,10 +66,8 @@ namespace BMW_ONBOARDING_SYSTEM
             services.AddDbContext<INF370DBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped<IAchievementTypeRepository, AchievementTypeRepository>();
             services.AddScoped<IActiveLogRepository, ActiveLogRepository>();
             services.AddScoped<IAuditLogRepository, AuditRepository>();
-            services.AddScoped<IBadgeRepository, BadgeRepository>();
             //services.AddScoped<ICertificateTypeRepository, CertificateTypeRepository>();
             services.AddScoped<ICityRepository, CityRepository>();
             services.AddScoped<ICourseRepository, CourseRepository>();
@@ -106,7 +104,6 @@ namespace BMW_ONBOARDING_SYSTEM
             services.AddScoped<ILessonRepository, LessonRepository>();
             services.AddScoped<IOption, OptionRepository>();
             services.AddScoped<IEquipmentQueryStatusRepository, EquipmentQueryStatusRepository>();
-            services.AddScoped<IAchievementRepository, AchievementRepository>();
 
             //services.AddScoped<IQuestionBankRepository, QuestionBankRepository>();
 

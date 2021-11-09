@@ -21,62 +21,56 @@ namespace BMW_ONBOARDING_SYSTEM.Migrations
 
             modelBuilder.Entity("BMW_ONBOARDING_SYSTEM.Models.Achievement", b =>
                 {
-                    b.Property<int>("AchievementId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("AchievementID")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime?>("AchievementDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("AchievementTypeId")
-                        .HasColumnName("AchievementTypeID")
+                    b.Property<int>("AchievementTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CourseId")
-                        .HasColumnName("CourseID")
+                    b.Property<DateTime>("DateAchieved")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("MarkAchieved")
+                        .HasColumnType("float");
+
+                    b.Property<int>("OnboarderId")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("MarkAchieved")
-                        .HasColumnType("decimal(18, 0)");
-
-                    b.Property<int?>("OnboarderId")
-                        .HasColumnName("OnboarderID")
+                    b.Property<int>("QuizId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("QuizId")
-                        .HasColumnName("QuizID")
-                        .HasColumnType("int");
-
-                    b.HasKey("AchievementId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AchievementTypeId");
 
-                    b.ToTable("Achievement");
+                    b.HasIndex("OnboarderId");
+
+                    b.HasIndex("QuizId");
+
+                    b.ToTable("Achievements");
                 });
 
             modelBuilder.Entity("BMW_ONBOARDING_SYSTEM.Models.AchievementType", b =>
                 {
-                    b.Property<int>("AchievementTypeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("AchievementTypeID")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AchievementTypeDescription")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<int?>("BadgeId")
-                        .HasColumnName("BadgeID")
+                    b.Property<int>("MaxMark")
                         .HasColumnType("int");
 
-                    b.HasKey("AchievementTypeId");
+                    b.Property<int>("MinMark")
+                        .HasColumnType("int");
 
-                    b.HasIndex("BadgeId");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("AchievementType");
+                    b.HasKey("Id");
+
+                    b.ToTable("AchievementTypes");
                 });
 
             modelBuilder.Entity("BMW_ONBOARDING_SYSTEM.Models.ActiveLog", b =>
@@ -191,24 +185,6 @@ namespace BMW_ONBOARDING_SYSTEM.Migrations
                     b.ToTable("AuditLog");
                 });
 
-            modelBuilder.Entity("BMW_ONBOARDING_SYSTEM.Models.Badge", b =>
-                {
-                    b.Property<int>("BadgeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("BadgeID")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("BadgeDecription")
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
-
-                    b.HasKey("BadgeId");
-
-                    b.ToTable("Badge");
-                });
-
             modelBuilder.Entity("BMW_ONBOARDING_SYSTEM.Models.City", b =>
                 {
                     b.Property<int>("CityId")
@@ -256,12 +232,12 @@ namespace BMW_ONBOARDING_SYSTEM.Migrations
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
-                    b.Property<DateTime?>("CourseDueDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("CourseName")
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("CourseID");
 
@@ -800,9 +776,6 @@ namespace BMW_ONBOARDING_SYSTEM.Migrations
                     b.Property<DateTime?>("EquipmentCheckOutDate")
                         .HasColumnType("datetime");
 
-                    b.Property<bool?>("ischecked")
-                        .HasColumnType("bit");
-
                     b.HasKey("EquipmentId", "OnboarderID")
                         .HasName("PK__Onboarde__704A407D484BC86A");
 
@@ -994,12 +967,6 @@ namespace BMW_ONBOARDING_SYSTEM.Migrations
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
-                    b.Property<int>("NumberOfQuestions")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PassMarkPercentage")
-                        .HasColumnType("int");
-
                     b.Property<int>("QuestionBankId")
                         .HasColumnType("int");
 
@@ -1110,16 +1077,22 @@ namespace BMW_ONBOARDING_SYSTEM.Migrations
             modelBuilder.Entity("BMW_ONBOARDING_SYSTEM.Models.Achievement", b =>
                 {
                     b.HasOne("BMW_ONBOARDING_SYSTEM.Models.AchievementType", "AchievementType")
-                        .WithMany("Achievement")
-                        .HasForeignKey("AchievementTypeId");
-                });
+                        .WithMany("Achievements")
+                        .HasForeignKey("AchievementTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("BMW_ONBOARDING_SYSTEM.Models.AchievementType", b =>
-                {
-                    b.HasOne("BMW_ONBOARDING_SYSTEM.Models.Badge", "Badge")
-                        .WithMany("AchievementType")
-                        .HasForeignKey("BadgeId")
-                        .HasConstraintName("FK_AchievementType_Badge");
+                    b.HasOne("BMW_ONBOARDING_SYSTEM.Models.Onboarder", "Onboarder")
+                        .WithMany("Achievements")
+                        .HasForeignKey("OnboarderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BMW_ONBOARDING_SYSTEM.Models.Quiz", "Quiz")
+                        .WithMany("Achievements")
+                        .HasForeignKey("QuizId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BMW_ONBOARDING_SYSTEM.Models.AuditLog", b =>

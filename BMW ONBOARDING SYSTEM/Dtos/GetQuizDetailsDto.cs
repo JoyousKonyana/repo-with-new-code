@@ -12,11 +12,9 @@ namespace BMW_ONBOARDING_SYSTEM.Dtos
 
         public string Name { get; set; }
 
-        public int PassMarkPercentage { get; set; }
 
         public string DueDate { get; set; }
 
-        public int NumberOfQuestions { get; set; }
 
         public List<GetQuizQuestionDto> Questions { get; set; }
 

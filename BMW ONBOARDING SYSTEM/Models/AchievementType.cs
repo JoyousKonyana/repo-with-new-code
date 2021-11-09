@@ -5,25 +5,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BMW_ONBOARDING_SYSTEM.Models
 {
-    public partial class AchievementType
+    public class AchievementType
     {
+
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int MinMark { get; set; }
+        public int MaxMark { get; set; }
+
+        public virtual List<Achievement> Achievements { get; set; }
 
         public AchievementType()
         {
-            Achievement = new List<Achievement>();
+            Achievements = new List<Achievement>();
         }
-        [Key]
-        [Column("AchievementTypeID")]
-        public int AchievementTypeId { get; set; }
-        [StringLength(50)]
-        public string AchievementTypeDescription { get; set; }
-        [Column("BadgeID")]
-        public int? BadgeId { get; set; }
-
-        [ForeignKey(nameof(BadgeId))]
-        [InverseProperty("AchievementType")]
-        public virtual Badge Badge { get; set; }
-
-        public virtual List<Achievement> Achievement { get; set; }
     }
 }
