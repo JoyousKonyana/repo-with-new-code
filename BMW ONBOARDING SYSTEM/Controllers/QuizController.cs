@@ -108,6 +108,8 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
         public ActionResult<IEnumerable<GetLessonOutcomeQuizDto>> GetAllLessonOutcomeQuizzes()
         {
             var quizzesInDb = _context.Quizzes
+                .Include(item=>item.Questions)
+                .ThenInclude(item=>item.Options)
                 .Include(item => item.LessonOutcome)
                 .Include(item => item.QuestionBank)
                 .Select(item => new GetLessonOutcomeQuizDto
@@ -119,7 +121,7 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
                     QuestionBankName = item.QuestionBank.Name,
                     LessonOutcomeId = item.LessonOutcome.LessonOutcomeID,
                     LessonOutcomeName = item.LessonOutcome.LessonOutcomeName,
-                    NumberOfQuestions = item.Questions.Count
+                    NumberOfQuestions = item.Questions.Count()
                 }).ToList();
 
             return quizzesInDb;
@@ -149,7 +151,9 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
                     QuestionBankId = item.QuestionBank.Id,
                     QuestionBankName = item.QuestionBank.Name,
                     LessonOutcomeId = item.LessonOutcome.LessonOutcomeID,
-                    LessonOutcomeName = item.LessonOutcome.LessonOutcomeName
+                    LessonOutcomeName = item.LessonOutcome.LessonOutcomeName,
+                    NumberOfQuestions = item.Questions.Count()
+
                 }).ToList();
 
             return quizzesInDb;
@@ -162,20 +166,20 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
         {
             var quiz = _context.Quizzes
                 .Where(item => item.Id == quizId)
+                .Include(item => item.Questions)
+                .ThenInclude(item => item.Options)
                 .Include(item => item.QuestionBank)
                 .Select(item => new GetQuizDetailsDto()
                 {
                     Id = item.Id,
                     Name = item.Name,
                     DueDate = item.DueDate.ToString("dd/MM/yyyy"),
-                    Questions = item.QuestionBank
-                        .Questions
-                        .Where(question => question.AnswerOptions.Count >= 2)
+                    Questions = item.Questions
                         .Select(question => new GetQuizQuestionDto
                         {
                             Id = question.Id,
-                            Name = question.Title,
-                            AnswerOptions = question.AnswerOptions
+                            Name = question.Name,
+                            AnswerOptions = question.Options
                                 .Select(answer => new GetQuizQuestionAnswerOptionDto
                                 {
                                     Id = answer.Id,

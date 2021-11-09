@@ -111,6 +111,7 @@ export class Set_QuizComponent implements OnInit {
       }
       if (event.type === HttpEventType.Response) {
         this.quizzes = event.body as N_Quiz[];
+        console.log(this.quizzes)
         this._ngxSpinner.hide();
       }
     },
