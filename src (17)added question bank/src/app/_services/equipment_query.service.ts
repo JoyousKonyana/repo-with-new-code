@@ -16,7 +16,7 @@ export class Equipment_QueryService {
    //Joyous, please put the link of the API here
    url = 'https://localhost:44319/api/EquipmentQuery';  
   //  header= new HttpHeaders(){
-  //   // Content-Type: "application/json"
+  //   "Content-Type": "application/json"
   //  };
 
   userId: any = localStorage.getItem('user');
@@ -58,7 +58,7 @@ export class Equipment_QueryService {
 
   url3 = 'https://localhost:44319/api/Equipment'; 
   checkEquipment(data) {
-    return this.http.put(`${this.url3}/CheckEquipment/` + this.userId, data);
+    return this.http.put(`${this.url3}/CheckEquipment/` + this.userId, data,);
   }
 
 } 

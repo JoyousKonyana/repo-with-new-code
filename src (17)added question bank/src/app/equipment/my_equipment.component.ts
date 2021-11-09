@@ -35,7 +35,7 @@ ngOnInit() {
   var movies = localStorage.getItem("user");
     movies     = JSON.parse(movies);
     this.modelequip = movies['onboarderid'];
-    console.log(movies['id']);
+    console.log("onboarder id",movies['id']);
     this.loadAll();
     
 }
@@ -143,6 +143,11 @@ equipid:number;
 
   checkEquipment(equipment) {
     console.log('Clicked..');
+    var movies = localStorage.getItem("user");
+    movies     = JSON.parse(movies);
+    this.modelequip = movies['onboarderid'];
+    console.log("onboarder id",movies['id']);
+    alert("hello");
     const date = new Date().toISOString();
     const data = {
       EquipmentId: equipment.equipmentId,
