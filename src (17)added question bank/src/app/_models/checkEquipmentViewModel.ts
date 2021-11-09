@@ -1,12 +1,11 @@
-import { Datetime } from "ng-modules";
-
 export class checkEquipmentViewModel {
-     EquipmentId!:number; 
-       OnboarderId:number;
-        //public DateTime EquipmentCheckOutDate { get; set; }
+    // public int EquipmentId { get; set; }
+    //     public int OnboarderId { get; set; }
+    //     //public DateTime EquipmentCheckOutDate { get; set; }
 
-        //public string EquipmentCheckOutCondition { get; set; }
+    //     //public string EquipmentCheckOutCondition { get; set; }
 
-         EquipmentCheckInDate:Datetime;
-         EquipmentCheckInCondition:Datetime 
+    //     public DateTime EquipmentCheckInDate { get; set; }
+
+    //     public string EquipmentCheckInCondition { get; set; }
 }

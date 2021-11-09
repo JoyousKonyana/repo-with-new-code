@@ -8,8 +8,6 @@ import { first } from 'rxjs/operators';
 import { AssignEquipment, Equipment_Query, EquipmentQuery } from '../_models';
 import { EquipmentService, Equipment_QueryService, AlertService } from '../_services';
 import { stringify } from 'querystring';
-import { checkEquipmentViewModel } from '../_models/checkEquipmentViewModel';
-import { Datetime } from 'ng-modules';
 
 @Component({ 
     templateUrl: 'my_equipment.component.html',
@@ -157,12 +155,6 @@ equipid:number;
       EquipmentCheckInDate: date,
       EquipmentCheckInCondition: equipment.equipmentCheckInCondition
     };
-    const data2:checkEquipmentViewModel ={
-      EquipmentId: data.EquipmentId,
-      OnboarderId: data.OnboarderId,
-      EquipmentCheckInDate: new daye,
-      EquipmentCheckInCondition: new Datetime
-    }
     this.yService.checkEquipment(data)
       // .pipe(first())
       .subscribe(res => {

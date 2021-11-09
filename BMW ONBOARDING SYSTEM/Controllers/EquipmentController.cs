@@ -250,9 +250,9 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
             return BadRequest();
         }
         //[Authorize(Roles = Role.Onboarder)]
-        [HttpPut]
+        [HttpPut("{userid}")]
         [Route("[action]/{userid}")]
-        public async Task<ActionResult<AssignedEquipmentViewModel>> CheckEquipment(int userid, [FromBody] AssignedEquipmentViewModel model)
+        public async Task<ActionResult<AssignedEquipmentViewModel>> CheckEquipment(int userid,[FromBody] AssignedEquipmentViewModel model)
         {
             try
             {
