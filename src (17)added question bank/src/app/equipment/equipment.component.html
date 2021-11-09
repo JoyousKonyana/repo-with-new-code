@@ -218,7 +218,6 @@ Update</button>
 <table class="table table-striped">
 <thead>
 <tr>
-  <th class="col">Equipment ID</th>
   <th class="col">Serial Number</th>
   <th class="col">Equipment Type</th>
   <th class="col">Equipment Brand</th>
@@ -230,15 +229,16 @@ Update</button>
 <tbody>
 
     <tr *ngFor="let items of equipment | filter:searchText; let i = index">
-      <td>{{items.equipmentId}}</td>
       <td>{{items.equipmentSerialNumber}}</td>
       <td>{{items.equipmentType.equipmentTypeDescription}}</td>
       <td>{{items.equipmentBrand.equipmentBrandName}}</td>
       <td>{{items.equipmentTradeUnDeadline}}</td>
 
-      <td *ngIf="items.equipmentTradeInStatus == 1">Not due for trade in</td>
-      <td *ngIf="items.equipmentTradeInStatus == 2">Due for trade in</td>
-      <td *ngIf="items.equipmentTradeInStatus == 3">Traded in</td>
+      <td>
+        <div *ngIf="items.equipmentTradeInStatus == 1">Not due for trade in</div>
+        <div *ngIf="items.equipmentTradeInStatus == 2">Due for trade in</div>
+        <div *ngIf="items.equipmentTradeInStatus == 3">Traded in</div>
+      </td>
       
       <td>
         <button class="btn btn-primary" (click)="editEquipment(i)">

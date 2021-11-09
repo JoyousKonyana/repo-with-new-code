@@ -13,9 +13,9 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 })
 
 export class EquipmentComponent implements OnInit {
-    equipment: any[] = [];
-    types: any[] = [];
-    brands: any[] = [];
+    equipment: any;
+    types: any;
+    brands: any;
 
     searchText = '';
 
@@ -103,34 +103,6 @@ export class EquipmentComponent implements OnInit {
     EquipmentSerialNumber: '1',
     WarrantyId: 1
   };
-
-  testData(){
-    this.equipment.push(
-      {
-        equipmentId: 1, 
-        equipmentTypeId: 1, 
-        equipmentTradeInStatusId: 1, 
-        warrantyStartDate: '',
-        warrantyEndDate: '',
-        warrantyStatus: '',
-        equipmentTradeInDeadline: '', 
-        equipmentBrandId: 1,
-        equipmentSerialNumber : 54651,
-      },
-      {
-        equipmentId: 2, 
-        equipmentTypeId: 1, 
-        equipmentTradeInStatusId: 1, 
-        warrantyStartDate: '',
-        warrantyEndDate: '',
-        warrantyStatus: '',
-        equipmentTradeInDeadline: '', 
-        equipmentBrandId: 1,
-        equipmentSerialNumber : 541,
-      }
-    );
-  }
-
 
   addEquipment() {
     console.log('Form Data: ', this.registerEquipmentForm.value);

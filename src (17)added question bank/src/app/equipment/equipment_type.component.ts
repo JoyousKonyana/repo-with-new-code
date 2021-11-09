@@ -77,6 +77,8 @@ export class Equipment_TypeComponent implements OnInit {
           },
           error => {
             this.alertService.error('Error, Creation was unsuccesful');
+            this.loadAll();
+            this.newEquipment_TypeClicked = !this.newEquipment_TypeClicked;
           });
     }
   }
@@ -91,6 +93,7 @@ export class Equipment_TypeComponent implements OnInit {
         },
         error => {
           this.alertService.error('Error, Deletion was unsuccesful');
+          this.loadAll();
         });
   }
 
@@ -107,7 +110,7 @@ export class Equipment_TypeComponent implements OnInit {
       if (i == editEquipment_TypeInfo) {
         this.model3.EquipmentTypeDescription = this.model2.EquipmentTypeDescription;
 
-        this.equipmentService.updateType(this.equipment_type[editEquipment_TypeInfo].EquipmentTypeId, this.model3)
+        this.equipmentService.updateType(this.equipment_type[editEquipment_TypeInfo].equipmentTypeId, this.model3)
           .pipe(first())
           .subscribe(
             data => {
@@ -117,6 +120,7 @@ export class Equipment_TypeComponent implements OnInit {
             },
             error => {
               this.alertService.error('Error, Update was unsuccesful');
+              this.loadAll();
             });
       }
     }

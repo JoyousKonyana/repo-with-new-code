@@ -72,6 +72,8 @@ export class BrandChartComponent {
       );
     }
 
+    
+
   public barChartOptions: ChartOptions = {responsive: true,};
   public barChartLabels: Label[] = ['Acer', 'LG', 'Sony', 'Lenovo'];
   public barChartType: ChartType = 'bar';

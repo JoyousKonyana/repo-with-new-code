@@ -79,7 +79,7 @@ export class EquipmentService {
 
   //Equipment Type
   deleteType(id: number) {
-    return this.http.delete(`${this.url}/DeleteEquipmentType/` + id + '/' + this.userId);
+    return this.http.delete(`${this.url3}/DeleteEquipmentType/` + id + '/' + this.userId);
   }
   updateType(id: number, equipment_type: Equipment_Type) {
     return this.http.put(`${this.url3}/UpdateEquipmentType/` + id + '/' + this.userId, equipment_type);

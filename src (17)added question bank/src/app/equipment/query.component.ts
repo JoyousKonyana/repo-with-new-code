@@ -44,7 +44,7 @@ export class QueryComponent implements OnInit {
     this.date = new Date().toISOString().slice(0, 10);
   }
 
-  private loadAll() {
+  loadAll() {
     this.queryService.getAllQueryStatus()
       .pipe(first())
       .subscribe(
@@ -77,6 +77,8 @@ export class QueryComponent implements OnInit {
           },
           error => {
             this.alertService.error('Error, Creation was unsuccesful');
+            this.loadAll();
+            this.newQuery_StatusClicked = !this.newQuery_StatusClicked;
           });
     }
   }
@@ -91,6 +93,7 @@ export class QueryComponent implements OnInit {
         },
         error => {
           this.alertService.error('Error, Deletion was unsuccesful');
+          this.loadAll();
         });
   }
 
