@@ -127,11 +127,13 @@ import { CommonModule } from '@angular/common';
 import { Question_BankComponent } from './course/question_bank/question_bank.component';
 import { MaterialModule } from './@material/material.module';;
 import { ManageBankQuestionsComponent } from './course/manage-bank-questions/manage-bank-questions.component'
-;
+  ;
 import { ListQuestionAnswersComponent } from './course/list-question-answers/list-question-answers.component'
-;
+  ;
 import { AddQuestionAnswerComponent } from './course/add-question-answer/add-question-answer.component';
 import { ListCourseEnrollmentsComponent } from './course/list-course-enrollments/list-course-enrollments.component'
+  ;
+import { ManageAchievementTypesComponent } from './course/manage-achievement-types/manage-achievement-types.component'
 //import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
@@ -217,13 +219,13 @@ import { ListCourseEnrollmentsComponent } from './course/list-course-enrollments
 
     //Home
     AboutComponent,
-    HomeComponent
-,
-    ManageBankQuestionsComponent
-,
-    ListQuestionAnswersComponent ,
-    AddQuestionAnswerComponent ,
-    ListCourseEnrollmentsComponent],
+    HomeComponent,
+    ManageBankQuestionsComponent,
+    ListQuestionAnswersComponent,
+    AddQuestionAnswerComponent,
+    ListCourseEnrollmentsComponent,
+    ManageAchievementTypesComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

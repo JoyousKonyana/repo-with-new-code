@@ -230,11 +230,11 @@ export class Register_EmployeeComponent implements OnInit {
     console.log('Form: ', this.registerEmployeeForm.value);
     console.log('Model2: ', this.model2);
 
-    if (this.registerEmployeeForm.invalid) {
-      this.alertService.error('Your Form is invalid');
-      return;
-    }
-    else {
+    // if (this.registerEmployeeForm.invalid) {
+    //   this.alertService.error('Your Form is invalid');
+    //   return;
+    // }
+    // else {
       this.employeeService.create(this.model2)
         .pipe(first())
         .subscribe(
@@ -244,7 +244,7 @@ export class Register_EmployeeComponent implements OnInit {
           error => {
             this.alertService.error('Error, Registration was unsuccesful');
           });
-    }
+    // }
   }
 
 }

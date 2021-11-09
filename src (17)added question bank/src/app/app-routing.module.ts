@@ -94,6 +94,7 @@ import { AuthGuard } from './_helpers';
 import { Question_BankComponent } from './course/question_bank/question_bank.component';
 import { ManageBankQuestionsComponent } from './course/manage-bank-questions/manage-bank-questions.component';
 import { ListCourseEnrollmentsComponent } from './course/list-course-enrollments/list-course-enrollments.component';
+import { ManageAchievementTypesComponent } from './course/manage-achievement-types/manage-achievement-types.component';
 
 const routes: Routes = [
   {
@@ -388,6 +389,7 @@ const routes: Routes = [
 
   { path: 'manage-bank-questions/:bankId', component: ManageBankQuestionsComponent },
   { path: 'course/enrollments/:courseId', component: ListCourseEnrollmentsComponent },
+  { path: 'manage-achievement-types', component: ManageAchievementTypesComponent },
 
   // otherwise redirect to home
   { path: '**', redirectTo: '' }
