@@ -8,6 +8,8 @@ import { first } from 'rxjs/operators';
 import { AssignEquipment, Equipment_Query, EquipmentQuery } from '../_models';
 import { EquipmentService, Equipment_QueryService, AlertService } from '../_services';
 import { stringify } from 'querystring';
+import { checkEquipmentViewModel } from '../_models/checkEquipmentViewModel';
+import { Datetime } from 'ng-modules';
 
 @Component({ 
     templateUrl: 'my_equipment.component.html',
@@ -35,7 +37,7 @@ ngOnInit() {
   var movies = localStorage.getItem("user");
     movies     = JSON.parse(movies);
     this.modelequip = movies['onboarderid'];
-    console.log(movies['id']);
+    console.log("onboarder id",movies['id']);
     this.loadAll();
     
 }
@@ -143,6 +145,11 @@ equipid:number;
 
   checkEquipment(equipment) {
     console.log('Clicked..');
+    var movies = localStorage.getItem("user");
+    movies     = JSON.parse(movies);
+    this.modelequip = movies['onboarderid'];
+    console.log("onboarder id",movies['id']);
+    alert("hello");
     const date = new Date().toISOString();
     const data = {
       EquipmentId: equipment.equipmentId,
@@ -150,6 +157,12 @@ equipid:number;
       EquipmentCheckInDate: date,
       EquipmentCheckInCondition: equipment.equipmentCheckInCondition
     };
+    const data2:checkEquipmentViewModel ={
+      EquipmentId: data.EquipmentId,
+      OnboarderId: data.OnboarderId,
+      EquipmentCheckInDate: new daye,
+      EquipmentCheckInCondition: new Datetime
+    }
     this.yService.checkEquipment(data)
       // .pipe(first())
       .subscribe(res => {
