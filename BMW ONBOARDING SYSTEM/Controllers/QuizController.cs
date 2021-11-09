@@ -26,7 +26,7 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
         }
 
         [HttpPost("Add")]
-        public IActionResult AddLessonOutcomeQuiz([FromBody] AddLessonOutcomeQuizDto model)
+        public IActionResult AddLessonOutcomeQuiz([FromBody]AddLessonOutcomeQuizDto model)
         {
             var message = "";
             if (!ModelState.IsValid)
@@ -36,7 +36,7 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
             }
 
             var isBankInDb = _context.QuestionBank
-                .FirstOrDefault(item => item.Id == model.QuestionBankId);
+                .FirstOrDefault(item => item.Id == model.QuestionBankId); 
 
             if (isBankInDb == null)
             {
@@ -44,12 +44,23 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
                 return BadRequest(new { message });
             }
 
+
             var isOutcomeInDb = _context.LessonOutcome
+                .Include(item=>item.Lesson)
+                .ThenInclude(item=>item.Course)
                 .FirstOrDefault(item => item.LessonOutcomeID == Convert.ToInt32(model.OutcomeId));
 
             if (isOutcomeInDb == null)
             {
                 message = "Lesson Outcome not found";
+                return BadRequest(new { message });
+            }
+
+            var courseDueDate = isOutcomeInDb.Lesson.Course.EndDate;
+
+            if (model.DueDate > courseDueDate)
+            {
+                message = "Due date cannot be after: " + courseDueDate.ToString("dd/MM/yyyy");
                 return BadRequest(new { message });
             }
 
@@ -60,9 +71,34 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
                 QuestionBankId = isBankInDb.Id,
                 DueDate = model.DueDate
             };
-
             _context.Quizzes.Add(newQuiz);
             _context.SaveChanges();
+
+            foreach (var question in model.Questions)
+            {
+                var newQuizQuestion = new QuizQuestion()
+                {
+                    QuizId = newQuiz.Id,
+                    Name = question.name
+                };
+
+                _context.QuizQuestions.Add(newQuizQuestion);
+                _context.SaveChanges();
+
+                foreach (var option in question.options)
+                {
+                    var newOption = new QuizQuestionOption()
+                    {
+                        QuizQuestionId = newQuizQuestion.Id,
+                        Option = option.option,
+                        IsOptionAnswer = option.isOptionAnswer
+                    };
+
+                    _context.QuizQuestionOptions.Add(newOption);
+                    _context.SaveChanges();
+                }
+
+            }
 
             return Ok();
 
@@ -118,7 +154,7 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
             return quizzesInDb;
         }
 
-      
+
 
         [HttpGet("Get/{quizId}")]
         public ActionResult<GetQuizDetailsDto> GetQuizDetails(int quizId)
@@ -153,7 +189,7 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
 
 
 
-        
+
         [HttpPost("SubmitQuiz/{onboarderid}")]
         public ActionResult<GetQuizDetailsDto> SubmitQuiz([FromBody] SubmitQuizDto model, int onboarderid)
         {
@@ -165,7 +201,7 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
                 return BadRequest(new { message });
             }
 
-      
+
 
             var quizInDb = _context.Quizzes
                 .Include(item => item.QuestionBank)
@@ -189,29 +225,29 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
 
 
             var count = 0;
-            foreach ( var question in questionBank.Questions) 
+            foreach (var question in questionBank.Questions)
             {
 
-                foreach (var questionQuiz in model.QuestionsAndOptions) 
+                foreach (var questionQuiz in model.QuestionsAndOptions)
                 {
 
-                 
+
 
                     if (question.Id == questionQuiz.QuestionId)
                     {
                         var correctOptions = _context.QuestionAnswerOptions
-                            .Where(item=>item.QuestionId == questionQuiz.QuestionId)
+                            .Where(item => item.QuestionId == questionQuiz.QuestionId)
                             .ToList();
 
-                        foreach(var optionFromDb in correctOptions)
+                        foreach (var optionFromDb in correctOptions)
                         {
                             if (questionQuiz.OptionId == optionFromDb.Id && optionFromDb.IsOptionAnswer)
                             {
                                 count += 1;
                             }
-                         
+
                         }
-                      
+
                     }
                 }
             }

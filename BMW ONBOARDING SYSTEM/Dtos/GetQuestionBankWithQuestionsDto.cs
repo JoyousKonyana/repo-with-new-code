@@ -28,5 +28,20 @@ namespace BMW_ONBOARDING_SYSTEM.Dtos
         public int Id { get; set; }
         public string Name { get; set; }
 
+        public List<GetQuestionAnswerOptionsDto> Options { get; set; }
+
+
+        public GetBankQuestionDto()
+        {
+            Options = new List<GetQuestionAnswerOptionsDto>();
+        }
+
+    }
+
+    public class GetQuestionAnswerOptionsDto
+    {
+        public int Id { get; set; }
+        public string Option { get; set; }
+        public bool IsOptionAnswer { get; set; }
     }
 }

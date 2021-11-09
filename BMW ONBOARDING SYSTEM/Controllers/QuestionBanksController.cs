@@ -137,7 +137,13 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
                     Questions = item.Questions.Select(question => new GetBankQuestionDto
                     {
                         Id = question.Id,
-                        Name = question.Title
+                        Name = question.Title,
+                        Options = question.AnswerOptions.Select(option => new GetQuestionAnswerOptionsDto
+                        {
+                            Id = option.Id,
+                            Option = option.Option,
+                            IsOptionAnswer = option.IsOptionAnswer
+                        }).ToList(),
                     }).ToList()
 
                 }).ToList();

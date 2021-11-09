@@ -24,6 +24,13 @@ export interface N_questionBankWithQuestions {
 export interface N_questionInBank {
   id: number,
   name: string,
+  options: Array<N_AnswerOptionUsingBool>
+}
+
+export interface N_AnswerOptionUsingBool {
+  id: number,
+  option: string,
+  isOptionAnswer: boolean,
 }
 
 export interface N_AnswerOption {

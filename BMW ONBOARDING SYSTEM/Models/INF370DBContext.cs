@@ -288,7 +288,9 @@ namespace BMW_ONBOARDING_SYSTEM.Models
 
         public DbSet<Question> Questions { get; set; }
         public DbSet<QuestionAnswerOption> QuestionAnswerOptions { get; set; }
-        public virtual DbSet<Quiz> Quizzes { get; set; }
+        public  DbSet<Quiz> Quizzes { get; set; }
+        public DbSet<QuizQuestion> QuizQuestions { get; set; }
+        public DbSet<QuizQuestionOption> QuizQuestionOptions { get; set; }
         public virtual DbSet<Achievement> Achievements { get; set; }
         public virtual DbSet<AchievementType> AchievementTypes { get; set; }
 

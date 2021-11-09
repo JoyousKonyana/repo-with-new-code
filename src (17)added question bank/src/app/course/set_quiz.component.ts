@@ -1,6 +1,6 @@
 import { Quiz } from './../_models/quiz';
 import { QuizService } from './../_services/quiz.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { AlertService } from '../_services';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,9 +8,10 @@ import { FormGroup, FormControl, Validators, FormBuilder, ValidationErrors } fro
 import { ManageCoursesService } from '../_services/manage-courses/manage-courses.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HttpEventType } from '@angular/common/http';
-import { N_questionBank, N_questionBankWithQuestions, N_Quiz } from '../_services/manage-courses/manage-courses.types';
+import { N_questionBank, N_questionBankWithQuestions, N_questionInBank, N_Quiz } from '../_services/manage-courses/manage-courses.types';
 import { ThrowStmt } from '@angular/compiler';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatListOption } from '@angular/material/list';
 
 @Component({
   templateUrl: 'set_quiz.component.html',
@@ -38,8 +39,11 @@ export class Set_QuizComponent implements OnInit {
   addQuizForm: FormGroup;
 
   questionBanks: N_questionBankWithQuestions[] = [];
+  questionsInbank: N_questionInBank[] = [];
   bankQuestionLength = 0;
 
+  selectedQuestions;
+  @ViewChild('selectedQuestionsFromBank') selectedQuestionsFromBank: any
   constructor(
     private alertService: AlertService,
     private _activatedRoute: ActivatedRoute,
@@ -59,10 +63,6 @@ export class Set_QuizComponent implements OnInit {
     this.getQuestionBanksWithQuestionsByOutcomeFromServer();
     this.minDate = new Date()
   }
-
-
-
-
 
   editQuiz(editQuizInfo: number) {
     // this.updateQuizClicked = !this.updateQuizClicked;
@@ -138,16 +138,30 @@ export class Set_QuizComponent implements OnInit {
   }
 
   onGetBankQuestionsCount(bank: N_questionBankWithQuestions) {
-    this.bankQuestionLength = bank.questions.length;
+    this.questionsInbank = bank.questions;
+  }
+
+  onGroupsChange(options: MatListOption[]) {
+    // console.log(options.map(o => o.value));
+    this.selectedQuestionsFromBank = options.map(o => o.value);
   }
 
   onSubmitQuiz() {
+    this.addQuizForm.controls['Questions'].setValue(this.selectedQuestionsFromBank);
     this.addQuizForm.controls['OutcomeId'].setValue(this.lesssonOutcomeId);
 
-    if (this.NumberOfQuestions.value > this.bankQuestionLength) {
-      this.openSnackBar("Error!", "Number Of Questions cannot be more than  " + this.bankQuestionLength, 3000)
+    console.log(this.addQuizForm.value);
+    var questionAsArray = this.Questions.value as [];
+
+    if (!Array.isArray(this.selectedQuestionsFromBank)) {
+      this.openSnackBar("Error!", "Select atleast one quesiton from bank", 3000);
       return;
     }
+    if (questionAsArray.length == 0) {
+      this.openSnackBar("Error!", "Select atleast one quesiton from bank", 3000);
+      return;
+    }
+
     if (this.addQuizForm.valid) {
       this._manageCoursesService.addQuiz(this.addQuizForm.value)
         .subscribe(event => {
@@ -156,13 +170,15 @@ export class Set_QuizComponent implements OnInit {
           }
           if (event.type === HttpEventType.Response) {
             this._ngxSpinner.hide();
+            this.newQuizClicked = false;
             this.getOutcomeQuizzesFromServer();
             this.openSnackBar("Add Quiz", "Success!", 3000);
           }
         },
           error => {
             this._ngxSpinner.hide();
-            this.alertService.error('Server Error:' + error.error.message);
+            this.openSnackBar("Error:", error.error.message, 4000);
+
           });
     }
     else {
@@ -174,20 +190,18 @@ export class Set_QuizComponent implements OnInit {
   private buildAddQuizForm() {
     this.addQuizForm = this._formBuilder.group({
       Name: ['', [Validators.required]],
-      PassMarkPercentage: ['', [Validators.required, Validators.max(100), Validators.min(51)]],
       DueDate: ['', [Validators.required]],
-      NumberOfQuestions: ['', [Validators.required]],
       QuestionBankId: ['', [Validators.required]],
+      Questions: [''],
       OutcomeId: ['', []],
     })
   }
 
   get Name() { return this.addQuizForm.get('Name') }
-  get PassMarkPercentage() { return this.addQuizForm.get('PassMarkPercentage') }
   get DueDate() { return this.addQuizForm.get('DueDate') }
-  get NumberOfQuestions() { return this.addQuizForm.get('NumberOfQuestions') }
-  get QuestionBankId() { return this.addQuizForm.get('QuestionBankId') }
+  get Questions() { return this.addQuizForm.get('Questions') }
   get OutcomeId() { return this.addQuizForm.get('OutcomeId') }
+  get QuestionBankId() { return this.addQuizForm.get('OutcomeId') }
 
   private getFormValidationErrors(form: FormGroup) {
     Object.keys(form.controls).forEach(key => {

@@ -21,9 +21,12 @@ namespace BMW_ONBOARDING_SYSTEM.Models
 
         public virtual List<Achievement> Achievements { get; set; }
 
+        public virtual List<QuizQuestion> Questions { get; set; }
+
         public Quiz()
         {
             Achievements = new List<Achievement>();
+            Questions = new List<QuizQuestion>();
 
         }
 

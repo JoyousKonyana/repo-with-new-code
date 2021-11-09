@@ -60,7 +60,7 @@
 
 <div *ngIf="newQuizClicked">
   <div class="formWrapper">
-    <form [formGroup]="addQuizForm" class="form-container">
+    <form [formGroup]="addQuizForm" class="form-container" *ngIf="questionBanks.length >0">
 
       <mat-form-field appearance="outline" class="form-inline-container">
         <mat-label>Title:</mat-label>
@@ -71,15 +71,7 @@
       </mat-form-field>
 
       <div class="form-inline-wrapper">
-        <mat-form-field appearance="outline" class="form-inline-container inline-control">
-          <mat-label>Pass Mark Percentage:</mat-label>
-          <input matInput type="number" min="0" max="100" formControlName="PassMarkPercentage" placeholder="75">
-          <mat-error *ngIf="PassMarkPercentage.touched && PassMarkPercentage.invalid">
-            <div *ngIf="PassMarkPercentage.errors.required">Pass mark is required.</div>
-            <div *ngIf="PassMarkPercentage.errors.max">Pass mark cannot be higher than 100.</div>
-            <div *ngIf="PassMarkPercentage.errors.min">Pass mark cannot be lower than 51.</div>
-          </mat-error>
-        </mat-form-field>
+
 
         <mat-form-field appearance="outline" class="form-inline-container inline-control">
           <mat-label>Due Date</mat-label>
@@ -105,14 +97,14 @@
             <div *ngIf="QuestionBankId.errors.required">Bank is required.</div>
           </mat-error>
         </mat-form-field>
+      </div>
 
-        <mat-form-field appearance="outline" class="form-inline-container">
-          <mat-label>Number of questions in Quiz</mat-label>
-          <input matInput type="number" placeholder="5" min="0" formControlName="NumberOfQuestions">
-          <mat-error *ngIf="NumberOfQuestions.touched && NumberOfQuestions.invalid">
-            <div *ngIf="QuestionBankId.errors.required">number of questions is required.</div>
-          </mat-error>
-        </mat-form-field>
+      <div class="form-inline-wrapper" *ngIf="questionsInbank.length >0">
+          <mat-selection-list #selectedQuestionsFromBank (selectionChange)="onGroupsChange(selectedQuestionsFromBank.selectedOptions.selected)">
+            <mat-list-option *ngFor="let question of questionsInbank" [value]="question">
+              {{question.name}}
+            </mat-list-option>
+          </mat-selection-list>
       </div>
 
       <div class="submitBtnContainer">
@@ -122,7 +114,8 @@
             <path
               d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
           </svg>
-          SAVE</button>
+          CREATE QUIZ
+        </button>
       </div>
     </form>
   </div>
