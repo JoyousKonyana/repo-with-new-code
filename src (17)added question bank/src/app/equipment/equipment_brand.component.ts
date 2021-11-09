@@ -31,7 +31,7 @@ export class Equipment_BrandComponent implements OnInit {
 
   model3: Equipment_Brand = {
       EquipmentBrandId: 0,
-      EquipmentTypeDescription: ''
+      EquipmentBrandName: ''
   };
 
   constructor(
@@ -49,8 +49,8 @@ export class Equipment_BrandComponent implements OnInit {
     this.equipmentService.getAllEquipment_Type()
       .pipe(first())
       .subscribe(
-        equipment_type => {
-          this.equipment_type = equipment_type;
+        equipment_brand => {
+          this.equipment_brand = equipment_brand;
         },
         error => {
           this.alertService.error('Error, Data was unsuccesfully retrieved');
@@ -67,7 +67,7 @@ export class Equipment_BrandComponent implements OnInit {
     else if ((Object.keys(this.model).length == 1)) {
       this.model3.EquipmentTypeDescription = this.model.EquipmentTypeDescription;
 
-      this.equipmentService.createType(this.model3)
+      this.equipmentService.createBrand(this.model3)
         .pipe(first())
         .subscribe(
           data => {

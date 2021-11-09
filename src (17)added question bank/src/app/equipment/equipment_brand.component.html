@@ -40,15 +40,15 @@
 
   <div *ngIf="newEquipment_TypeClicked">
     <div class="formWrapper">
-      <h2>Create Equipment Type</h2>
+      <h2>Create Equipment Brand</h2>
       <form>
         <div class="form-group name">
-          <label>Enter Equipment Type Description:</label>
+          <label>Enter Equipment Brand Name:</label>
           <input type="text" 
             class="form-control input" 
             id="name" 
             name="name" 
-            [(ngModel)]="model.EquipmentTypeDescription"
+            [(ngModel)]="model.EquipmentBrandName"
             placeholder="Laptop">
         </div>
         <div class="submitBtnContainer">
@@ -77,12 +77,13 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th class="col">Equipment Type Description</th>
+          <th class="col-9">Equipment Brand Description</th>
+          <th class="col-3">Action</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of equipment_type | filter:searchText; let i = index">
-          <td>{{item.equipmentTypeDescription}}</td>
+          <td>{{item.equipmentBrandName}}</td>
           <td>
             <button class="btn btn-primary" (click)="editEquipment_Type(i)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -113,12 +114,12 @@
   
   <form>
     <div class="form-group name">
-      <label>Enter Equipment Type Description:</label>
+      <label>Enter Equipment Brand Name:</label>
       <input type="text" 
         class="form-control input" 
         id="name" 
         name="name" 
-        [(ngModel)]="model2.EquipmentTypeDescription"
+        [(ngModel)]="model2.EquipmentBrandName"
         placeholder="Laptop">
     </div>
     <button class="btn btn-success" type="submit" (click)="updateEquipment_Type()">
