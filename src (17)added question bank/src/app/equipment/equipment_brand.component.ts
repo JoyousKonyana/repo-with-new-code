@@ -1,5 +1,4 @@
 import { Equipment_Brand } from './../_models/equipment_brand';
-import { Equipment_Type } from './../_models/equipment_type';
 import { EquipmentService } from './../_services/equipment.service';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
@@ -12,7 +11,7 @@ import { Router } from '@angular/router';
 import { ModalService } from '../_modal';
 
 @Component({
-  templateUrl: 'equipment_type.component.html',
+  templateUrl: 'equipment_brand.component.html',
   styleUrls: ['./ss_equipment.component.css']
 })
 
@@ -46,7 +45,7 @@ export class Equipment_BrandComponent implements OnInit {
   }
 
   private loadAll() {
-    this.equipmentService.getAllEquipment_Type()
+    this.equipmentService.getAllEquipment_Brand()
       .pipe(first())
       .subscribe(
         equipment_brand => {
@@ -65,7 +64,7 @@ export class Equipment_BrandComponent implements OnInit {
       this.model = {};
     }
     else if ((Object.keys(this.model).length == 1)) {
-      this.model3.EquipmentTypeDescription = this.model.EquipmentTypeDescription;
+      this.model3.EquipmentBrandName = this.model.EquipmentBrandName;
 
       this.equipmentService.createBrand(this.model3)
         .pipe(first())
@@ -99,19 +98,19 @@ export class Equipment_BrandComponent implements OnInit {
   }
 
   editEquipment_Type(editEquipment_TypeInfo: number) {
-    this.model2.CourseDescription = this.equipment_type[editEquipment_TypeInfo].courseDescription;
+    this.model2.EquipmentBrandName = this.equipment_brand[editEquipment_TypeInfo].equipmentBrandName;
     this.myValue = editEquipment_TypeInfo;
   }
 
   updateEquipment_Type() {
     let editEquipment_TypeInfo = this.myValue;
 
-    for (let i = 0; i < this.equipment_type.length; i++) {
+    for (let i = 0; i < this.equipment_brand.length; i++) {
 
       if (i == editEquipment_TypeInfo) {
-        this.model3.EquipmentTypeDescription = this.model2.EquipmentTypeDescription;
+        this.model3.EquipmentBrandName = this.model2.EquipmentBrandName;
 
-        this.equipmentService.updateType(this.equipment_type[editEquipment_TypeInfo].equipmentTypeId, this.model3)
+        this.equipmentService.updateBrand(this.equipment_brand[editEquipment_TypeInfo].equipmentBrandId, this.model3)
           .pipe(first())
           .subscribe(
             data => {
@@ -129,10 +128,6 @@ export class Equipment_BrandComponent implements OnInit {
 
   addNewCourseBtn() {
     this.newEquipment_TypeClicked = !this.newEquipment_TypeClicked;
-  }
-
-  onNavigateToCourseLessons(course:any){
-    this.router.navigate(['/lesson',course.courseID])
   }
 
 }

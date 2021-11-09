@@ -49,6 +49,7 @@ import {
   EquipDashboardComponent,
   QueryComponent,
   Equipment_TypeComponent,
+  Equipment_BrandComponent,
   EquipmentQueryComponent
 } from './equipment';
 
@@ -127,6 +128,10 @@ const routes: Routes = [
     path: 'equipment_type',
     component: Equipment_TypeComponent,
     //canActivate: [AuthGuard]
+  },
+  {
+    path: 'quipment_brand',
+    component: Equipment_BrandComponent
   },
   {
     path: 'equipment_query',

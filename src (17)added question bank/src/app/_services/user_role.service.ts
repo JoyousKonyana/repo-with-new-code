@@ -16,18 +16,11 @@ export class User_RoleService {
    url = 'https://localhost:44319/api/UserRole'; 
    movies:any = localStorage.getItem("user");
    moviesi:any     = JSON.parse(this.movies);
-<<<<<<< HEAD
-   userId
-   if(moviesi){
-    this.userId = this.moviesi['id'];
-   }
-=======
    userId;
    if(moviesi){
     this.userId = this.moviesi['id'];
    }
   
->>>>>>> 3716f2eff8a2688ce62daafdf7aa0715ec3e04a4
 
   constructor(private http: HttpClient) { }  
 

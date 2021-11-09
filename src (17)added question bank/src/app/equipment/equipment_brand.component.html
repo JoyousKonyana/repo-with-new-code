@@ -34,7 +34,7 @@
     Help
   </div>
   <div class="hide">
-    This page allows you to Create, Update, Read and Delete a Equipment Types in the system.
+    This page allows you to Create, Update, Read and Delete a Equipment Brand in the system.
   </div>
   
 
@@ -49,7 +49,7 @@
             id="name" 
             name="name" 
             [(ngModel)]="model.EquipmentBrandName"
-            placeholder="Laptop">
+            placeholder="HP">
         </div>
         <div class="submitBtnContainer">
           <button type="submit" class="btn btn-success" (click)="addEquipment_Type()">
@@ -82,7 +82,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of equipment_type | filter:searchText; let i = index">
+        <tr *ngFor="let item of equipment_brand | filter:searchText; let i = index">
           <td>{{item.equipmentBrandName}}</td>
           <td>
             <button class="btn btn-primary" (click)="editEquipment_Type(i)">
@@ -94,7 +94,7 @@
                   d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
               </svg>
             </button>
-            <button class="btn btn-danger" (click)="deleteEquipment_Type(item.equipmentTypeId)">
+            <button class="btn btn-danger" (click)="deleteEquipment_Type(item.equipmentBrandId)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill"
                 viewBox="0 0 16 16">
                 <path
@@ -109,7 +109,7 @@
   
   
   <div class="editEmployeeTitleContainer">
-    <div class="">Update Equipment Type</div>
+    <div class="">Update Equipment Brand</div>
   </div>
   
   <form>
@@ -120,7 +120,7 @@
         id="name" 
         name="name" 
         [(ngModel)]="model2.EquipmentBrandName"
-        placeholder="Laptop">
+        placeholder="HP">
     </div>
     <button class="btn btn-success" type="submit" (click)="updateEquipment_Type()">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square"

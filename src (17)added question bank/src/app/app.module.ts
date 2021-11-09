@@ -35,6 +35,7 @@ import {
   QueryComponent,
   Equipment_TypeComponent,
   EquipmentQueryComponent,
+  Equipment_BrandComponent,
 
   //Charts
   TypeChartComponent,
@@ -194,6 +195,7 @@ import { ListCourseEnrollmentsComponent } from './course/list-course-enrollments
     QueryComponent,
     Equipment_TypeComponent,
     EquipmentQueryComponent,
+    Equipment_BrandComponent,
     TypeChartComponent, //Chart
     BrandChartComponent, //Chart
 

@@ -7,3 +7,4 @@
  export * from './equipment_type.component';
  export * from './equipment_query.component';
  export * from './query.component';
+ export * from './equipment_brand.component';
