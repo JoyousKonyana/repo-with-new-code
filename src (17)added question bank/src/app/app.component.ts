@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
   findUserRole() {
     this.dataHolder = this.user.userRole.userRoleDescription;
     this.role = this.dataHolder.split(" ");//This split string to an array when system detects space
-   alert(this.role[3])
+  //  alert(this.role[3])
     for (let i = 0; i < this.role.length; i++) {
       if (this.role[i] == "user" || this.role[i] == "Users") {
         this.users = true;

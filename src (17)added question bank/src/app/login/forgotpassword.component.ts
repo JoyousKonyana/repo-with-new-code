@@ -7,7 +7,7 @@ import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../_services';
 import { ForgotPassWord } from '../_models';
 
-@Component({ 
+@Component({
     templateUrl: 'forgotpassword.component.html',
     styleUrls: ['./login.component.css']
 })
@@ -22,7 +22,7 @@ export class ForgotPasswordComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService
-    ) { 
+    ) {
     }
 
     ngOnInit() {
@@ -50,7 +50,7 @@ export class ForgotPasswordComponent implements OnInit {
 
         this.loading = true;
         this.forgotPassword=this.loginForm.get('username')?.value;
-        alert(this.forgotPassword=this.loginForm.get('username')?.value);
+        // alert(this.forgotPassword=this.loginForm.get('username')?.value);
         this.authenticationService.forgotpassword(this.forgotPassword)
             .pipe(first())
             .subscribe({

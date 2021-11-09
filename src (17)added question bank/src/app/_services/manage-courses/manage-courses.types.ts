@@ -53,8 +53,14 @@ export interface N_Enrollement {
   graduationDate: number
 }
 
-
 export interface N_courseDetails {
   id: number,
   name: string
+}
+
+export interface N_AchievementTye {
+  id: number,
+  name: string,
+  minMark: number,
+  maxMark: number
 }

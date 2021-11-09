@@ -6,9 +6,9 @@ import { first } from 'rxjs/operators';
 import { Lesson } from '../_models';
 import { LessonService, AlertService } from '../_services';
 
-@Component({ 
+@Component({
     templateUrl: 'take_lesson.component.html',
-    styleUrls: ['./ss_onboarder.component.css'] 
+    styleUrls: ['./ss_onboarder.component.css']
 })
 
 export class Take_LessonComponent implements OnInit {
@@ -27,10 +27,10 @@ export class Take_LessonComponent implements OnInit {
 
   }
 
-  ngOnInit() { 
-      this._Activatedroute.paramMap.subscribe(params => { 
-        this.id = params.get('id'); 
-        alert(this.id);
+  ngOnInit() {
+      this._Activatedroute.paramMap.subscribe(params => {
+        this.id = params.get('id');
+        // alert(this.id);
         localStorage.setItem("courseid", this.id);
       });
 
@@ -46,7 +46,7 @@ export class Take_LessonComponent implements OnInit {
       },
       error => {
         this.alertService.error('Error, Data was unsuccesfully retrieved');
-      } 
+      }
     );
   }
 

@@ -29,7 +29,7 @@ import { first } from 'rxjs/operators';
 @Component({
   selector: 'my-app',
   templateUrl: './import_employee.component.html',
-  
+
 })
 export class Import_EmployeeComponent  {
 
@@ -43,7 +43,7 @@ export class Import_EmployeeComponent  {
     private alertService: AlertService
   ) {
 
-  } 
+  }
 
   uploadListener($event: any): void {
 
@@ -70,7 +70,7 @@ export class Import_EmployeeComponent  {
       };
 
     } else {
-      alert("Please import valid .csv file.");
+      // alert("Please import valid .csv file.");
       this.fileReset();
     }
   }
@@ -146,10 +146,10 @@ export class Import_EmployeeComponent  {
     this.jsondatadisplay = JSON.stringify(this.records);
   }
 
-  // let arr: any[] = [];  
-  // Object.keys(csvArr).map(function(key){  
-  //   arr.push({[key]:employees[key]})  
-  //   return arr;  
-  // }); 
+  // let arr: any[] = [];
+  // Object.keys(csvArr).map(function(key){
+  //   arr.push({[key]:employees[key]})
+  //   return arr;
+  // });
 
 }

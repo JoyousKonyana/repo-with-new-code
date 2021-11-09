@@ -84,4 +84,15 @@ export class ManageCoursesService {
       payload,
       { reportProgress: true, observe: 'events' });
   }
+
+  getAchivementTypes() {
+    return this._httpClient.get(this.endpointBase.concat("Achievements/Types/GetAll"),
+      { reportProgress: true, observe: 'events' });
+  }
+
+  addAchievementType(payload) {
+    return this._httpClient.post(this.endpointBase.concat("Achievements/Types/Add"),
+      payload,
+      { reportProgress: true, observe: 'events' });
+  }
 }

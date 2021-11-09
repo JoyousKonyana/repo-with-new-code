@@ -7,7 +7,7 @@ import { first } from 'rxjs/operators';
 import { User, ResetPassword } from '../_models';
 import { UserService, AuthenticationService } from '../_services';
 
-@Component({ 
+@Component({
     templateUrl: 'account.component.html',
     styleUrls: ['./profile.component.css']
 })
@@ -39,7 +39,7 @@ export class AccountComponent {
 
                          this.model2.UserId = localStorage.getItem('user');
                          this.model2.Password = this.model.Confirm;
-                         alert(this.model2.Password)
+                        //  alert(this.model2.Password)
 
                         this.userService.resetPassword(this.model2)
                         .pipe(first())

@@ -73,7 +73,6 @@ export class Assign_CourseComponent implements OnInit {
   onAddSubmit() {
 
     if (this.addEnrollmentForm.valid) {
-      console.log(this.addEnrollmentForm.value)
 
       this._manageCoursesService.addOnborderEnrollment(this.addEnrollmentForm.value)
         .subscribe(event => {
