@@ -1,0 +1,16 @@
+
+ <form [formGroup]="CheckequipmentForm">
+
+
+<p>Equipment Check out</p>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Enter Equipment check in condition here</mat-label>
+        <input matInput formControlName="checkoutCondition">
+      </mat-form-field>
+  
+      <br>
+
+      <button mat-raised-button  (click)="submit()">Check-in</button>
+   
+</form>
