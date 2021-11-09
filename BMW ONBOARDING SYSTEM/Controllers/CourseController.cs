@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BMW_ONBOARDING_SYSTEM.Dtos;
+using Microsoft.EntityFrameworkCore;
 
 namespace BMW_ONBOARDING_SYSTEM.Controllers
 {
@@ -55,35 +56,44 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
         [Route("[action]/{userid}")]
         public async Task<ActionResult<CourseViewModel>> CreateCourse(int userid, [FromBody] CourseViewModel model)
         {
-            try
+            var message = "";
+            if (!ModelState.IsValid)
             {
-                var course = _mapper.Map<Course>(model);
-
-                _courseRepository.Add(course);
-
-                if (await _courseRepository.SaveChangesAsync())
-                {
-                    AuditLog auditLog = new AuditLog();
-                    auditLog.AuditLogDescription = "Created Course with name" + ' ' + course.CourseName;
-                    auditLog.AuditLogDatestamp = DateTime.Now;
-                    auditLog.UserId = userid;
-
-                    ////removetimefromdatabase
-                    //auditLog.AuditLogTimestamp = TimeSpan.
-                    _courseRepository.Add(auditLog);
-                    if (await _courseRepository.SaveChangesAsync())
-                    {
-                        return Created($"/api/course{course.CourseName}", _mapper.Map<CourseViewModel>(course));
-                    }
-
-                }
+                message = "Something went wrong";
+                return BadRequest(new { message });
             }
-            catch (Exception)
+
+            var isCourseInDb = _context.Course
+                .FirstOrDefault(item => item.CourseName.ToLower() == model.CourseName);
+
+            if (isCourseInDb != null)
             {
-
-                BadRequest();
+                message = "Course name already exists";
+                return BadRequest(new { message });
             }
-            return BadRequest();
+
+            var newCourse = new Course()
+            {
+                CourseName = model.CourseName,
+                CourseDescription = model.CourseDescription,
+                EndDate = model.CourseDueDate
+            };
+
+            _context.Course.Add(newCourse);
+            await _context.SaveChangesAsync();
+
+            var auditLog = new AuditLog
+            {
+                AuditLogDescription = "Created Course with name" + ' ' + model.CourseName,
+                AuditLogDatestamp = DateTime.Now,
+                UserId = userid
+            };
+
+            _context.AuditLog.Add(auditLog);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+
         }
         //[Authorize(Roles = Role.Admin)]
         [HttpPost]
@@ -129,12 +139,19 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
         //[Authorize(Roles = Role.Onboarder)]
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> GetAllCourses()
+        public async Task<ActionResult<IEnumerable<GetCourseDto>>> GetAllCourses()
         {
             try
             {
-                var courses = await _courseRepository.GetAllCoursesAsync();
-                return Ok(courses);
+                var courses = await _context.Course
+                    .Select(item => new GetCourseDto
+                    {
+                        CourseID = item.CourseID,
+                        CourseName = item.CourseName,
+                        CourseDescription = item.CourseDescription,
+                        CourseDueDate = item.EndDate.ToString("dd/MM/yyyy")
+                    }).ToListAsync();
+                return courses;
             }
             catch (Exception)
             {

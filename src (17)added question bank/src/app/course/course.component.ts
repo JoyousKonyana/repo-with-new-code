@@ -132,11 +132,11 @@ export class CourseComponent implements OnInit {
     this.newCourseClicked = !this.newCourseClicked;
   }
 
-  onNavigateToCourseLessons(course:any){
-    this.router.navigate(['/lesson',course.courseID])
+  onNavigateToCourseLessons(course: any) {
+    this.router.navigate(['/lesson', course.courseID])
   }
-  onNavigateToEnrollments(course:any){
-    this.router.navigate(['/course/enrollments',course.courseID])
+  onNavigateToEnrollments(course: any) {
+    this.router.navigate(['/course/enrollments', course.courseID])
   }
 
 }

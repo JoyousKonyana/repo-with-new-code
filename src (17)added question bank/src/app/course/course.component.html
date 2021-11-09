@@ -54,13 +54,23 @@
         <label>Enter Course Description:</label>
         <textarea type="text" class="form-control positionInput" id="description" name="description"
           [(ngModel)]="model.CourseDescription" placeholder="Description">
-    </textarea>
+        </textarea>
       </div>
-      <div class="form-group name">
-        <label>Enter Course Due Date:</label>
-        <input type="date" min="{{this.date}}" class="form-control input" id="CourseDueDate" name="CourseDueDate"
-          [(ngModel)]="model.CourseDueDate">
-      </div>
+
+
+
+      <mat-form-field appearance="outline">
+        <mat-label>Enter Course Due Date:</mat-label>
+        <input matInput [matDatepicker]="picker" class="form-control input" id="CourseDueDate"
+          name="CourseDueDate" [(ngModel)]="model.CourseDueDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <!-- <mat-error *ngIf="EnrollmentDate.touched && EnrollmentDate.invalid">
+          <div *ngIf="EnrollmentDate.errors.required">Enrollment Date is required.</div>
+        </mat-error> -->
+      </mat-form-field>
+
+
       <div class="submitBtnContainer">
         <button type="submit" class="btn btn-success" (click)="addCourse()">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -87,8 +97,7 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th class="col-1">ID</th>
-        <th class="col-3">Name</th>
+        <th class="col-2">Name</th>
         <th class="col-3">Description</th>
         <th class="col-2">Due Date</th>
         <th class="col-4">Action</th>
@@ -96,7 +105,6 @@
     </thead>
     <tbody>
       <tr *ngFor="let course of course | filter:searchText; let i = index">
-        <td>{{course.courseID}}</td>
         <td>{{course.courseName}}</td>
         <td>{{course.courseDescription}}</td>
         <td>{{course.courseDueDate}}</td>

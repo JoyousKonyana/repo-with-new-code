@@ -12,7 +12,7 @@ namespace BMW_ONBOARDING_SYSTEM.ViewModel
 
         public string CourseDescription { get; set; }
 
-        public DateTime? CourseDueDate { get; set; }
+        public DateTime CourseDueDate { get; set; }
 
        
     }
