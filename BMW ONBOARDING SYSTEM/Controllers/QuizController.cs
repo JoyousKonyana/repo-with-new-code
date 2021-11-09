@@ -118,7 +118,8 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
                     QuestionBankId = item.QuestionBank.Id,
                     QuestionBankName = item.QuestionBank.Name,
                     LessonOutcomeId = item.LessonOutcome.LessonOutcomeID,
-                    LessonOutcomeName = item.LessonOutcome.LessonOutcomeName
+                    LessonOutcomeName = item.LessonOutcome.LessonOutcomeName,
+                    NumberOfQuestions = item.Questions.Count
                 }).ToList();
 
             return quizzesInDb;

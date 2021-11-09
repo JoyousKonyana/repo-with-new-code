@@ -127,6 +127,11 @@ export class Set_QuizComponent implements OnInit {
       }
       if (event.type === HttpEventType.Response) {
         this.questionBanks = event.body as N_questionBankWithQuestions[];
+        if(this.questionBanks.length ==0){
+          this.alertService.error('Error:Create a question bank first');
+          return
+        }
+
         this.buildAddQuizForm();
         this._ngxSpinner.hide();
       }
@@ -142,7 +147,6 @@ export class Set_QuizComponent implements OnInit {
   }
 
   onGroupsChange(options: MatListOption[]) {
-    // console.log(options.map(o => o.value));
     this.selectedQuestionsFromBank = options.map(o => o.value);
   }
 
@@ -153,16 +157,17 @@ export class Set_QuizComponent implements OnInit {
     console.log(this.addQuizForm.value);
     var questionAsArray = this.Questions.value as [];
 
-    if (!Array.isArray(this.selectedQuestionsFromBank)) {
-      this.openSnackBar("Error!", "Select atleast one quesiton from bank", 3000);
-      return;
-    }
-    if (questionAsArray.length == 0) {
-      this.openSnackBar("Error!", "Select atleast one quesiton from bank", 3000);
-      return;
-    }
-
     if (this.addQuizForm.valid) {
+
+      if (!Array.isArray(this.selectedQuestionsFromBank)) {
+        this.openSnackBar("Error!", "Select atleast one quesiton from bank", 3000);
+        return;
+      }
+      if (questionAsArray.length == 0) {
+        this.openSnackBar("Error!", "Select atleast one quesiton from bank", 3000);
+        return;
+      }
+
       this._manageCoursesService.addQuiz(this.addQuizForm.value)
         .subscribe(event => {
           if (event.type === HttpEventType.Sent) {

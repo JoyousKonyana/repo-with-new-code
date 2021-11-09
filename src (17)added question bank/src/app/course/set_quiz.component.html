@@ -60,7 +60,7 @@
 
 <div *ngIf="newQuizClicked">
   <div class="formWrapper">
-    <form [formGroup]="addQuizForm" class="form-container" *ngIf="questionBanks.length >0">
+    <form [formGroup]="addQuizForm" class="form-container" *ngIf="addQuizForm != null">
 
       <mat-form-field appearance="outline" class="form-inline-container">
         <mat-label>Title:</mat-label>
@@ -100,11 +100,12 @@
       </div>
 
       <div class="form-inline-wrapper" *ngIf="questionsInbank.length >0">
-          <mat-selection-list #selectedQuestionsFromBank (selectionChange)="onGroupsChange(selectedQuestionsFromBank.selectedOptions.selected)">
-            <mat-list-option *ngFor="let question of questionsInbank" [value]="question">
-              {{question.name}}
-            </mat-list-option>
-          </mat-selection-list>
+        <mat-selection-list #selectedQuestionsFromBank
+          (selectionChange)="onGroupsChange(selectedQuestionsFromBank.selectedOptions.selected)">
+          <mat-list-option *ngFor="let question of questionsInbank" [value]="question">
+            {{question.name}}
+          </mat-list-option>
+        </mat-selection-list>
       </div>
 
       <div class="submitBtnContainer">
@@ -130,7 +131,6 @@
         <th class="col-4">Title</th>
         <th class="col-2">Due Date</th>
         <th class="col-2">Number of Questions</th>
-        <th class="col-2">Passing Percentage</th>
         <th class="col-2">Action</th>
       </tr>
     </thead>
@@ -139,7 +139,6 @@
         <td>{{item.name}}</td>
         <td>{{item.dueDate}}</td>
         <td>{{item.numberOfQuestions}}</td>
-        <td>{{item.passMarkPercentage}} %</td>
         <td class="table-actions-container">
           <button class="btn btn-primary table-action-item" (click)="editQuiz(i)">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

@@ -11,6 +11,7 @@ namespace BMW_ONBOARDING_SYSTEM.Dtos
 
         public string DueDate { get; set; }
 
+        public int NumberOfQuestions { get; set; }
         public int LessonOutcomeId { get; set; }
         public string LessonOutcomeName { get; set; }
 
