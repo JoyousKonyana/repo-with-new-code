@@ -1,3 +1,4 @@
+
 import { CheckOut } from './../_models/checkoutModel';
 import { ReportsModel } from './../_models/reportModel';
 import { EquipmentQuery } from './../_models/equipmentquery';
@@ -86,6 +87,17 @@ export class EquipmentService {
   }
   createType(equipment_type: Equipment_Type) {
     return this.http.post(`${this.url3}/CreateEquipmentType/` + this.userId, equipment_type);
+  }
+
+  //Equipment Brand
+  deleteBrand(id: number) {
+    return this.http.delete(`${this.url2}/DeleteEquipmentBrand/` + id + '/' + this.userId);
+  }
+  updateBrand(id: number, Equipment_Brand: Equipment_Brand) {
+    return this.http.put(`${this.url2}/UpdateEquipmentBrand/` + id + '/' + this.userId, Equipment_Brand);
+  }
+  createBrand(Equipment_Brand: Equipment_Brand) {
+    return this.http.post(`${this.url2}/CreateEquipmentBrand/` + this.userId, Equipment_Brand);
   }
 
 } 
