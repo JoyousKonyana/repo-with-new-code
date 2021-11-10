@@ -20,11 +20,14 @@ namespace BMW_ONBOARDING_SYSTEM.Models
         public virtual List<Lesson> Lessons { get; set; }
 
         public virtual List<OnboarderCourseEnrollment> OnBoarders { get; set; }
+        public virtual List<Achievement> Achievements { get; set; }
+
 
         public Course()
         {
             Lessons = new List<Lesson>();
             OnBoarders = new List<OnboarderCourseEnrollment>();
+            Achievements = new List<Achievement>();
         }
     }
 }

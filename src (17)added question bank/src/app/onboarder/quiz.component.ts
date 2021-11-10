@@ -23,11 +23,14 @@ export class QuizComponent implements OnInit {
   quizId: any;
 
   // storedAnswers: submitquizDTO[];
-  storedAnswers:any;
+  storedAnswers: any;
   storedAnswer: string;
 
-  selectedOptions:any[] = [];
-  slectedOption:any = {};
+  selectedOptions: any[] = [];
+  slectedOption: any = {};
+  quizSubmitted = false;
+  quizPassed = false;
+  quizFailed = false;
 
   constructor(
     private modalService: ModalService,
@@ -45,39 +48,39 @@ export class QuizComponent implements OnInit {
   }
 
   token: any;
-onboarderid!:number;
-courseid!:number;
+  onboarderid!: number;
+  courseid!: number;
   ngOnInit() {
     this._Activatedroute.paramMap.subscribe(params => {
       this.quizId = params.get('id');
 
       var movies = localStorage.getItem("user");
-      movies     = JSON.parse(movies);
+      movies = JSON.parse(movies);
       this.onboarderid = movies['onboarderid'];
 
       this.courseid = Number(localStorage.getItem("courseid"));
       console.log(movies['id']);
     });
 
-    this.token = localStorage.getItem('token');    
+    this.token = localStorage.getItem('token');
 
-    this.getLessonOutcomeQuizzesFromServer();
+    this.getQuizDetailsFromServer();
   }
 
-  private getLessonOutcomeQuizzesFromServer() {
+  private getQuizDetailsFromServer() {
     this._manageCoursesService.getQuizDetails(this.quizId).subscribe(event => {
       if (event.type === HttpEventType.Sent) {
         this._ngxSpinner.show();
       }
       if (event.type === HttpEventType.Response) {
         this.quiz = event.body as any;
-        console.log("quiz",this.quiz);
+        console.log("quiz", this.quiz);
         this._ngxSpinner.hide();
       }
     },
       error => {
         this._ngxSpinner.hide();
-        this.alertService.error('Error: Course Enrollments not found');
+        this.alertService.error('Error: Quiz not found');
       });
   }
 
@@ -86,44 +89,38 @@ courseid!:number;
     OptionId: ''
   }
 
-  selected(event:any, question:any) {
-
+  selected(event: any, question: any) {
     var seletedOption2 = {};
     seletedOption2["OptionId"] = event.id;
     seletedOption2["QuestionId"] = question.id;
-
-    console.log(seletedOption2);
-
     this.selectedOptions.push(seletedOption2);
-
   }
 
   submitQuiz() {
-
-    var formToSubmit ={};
+    var formToSubmit = {};
     formToSubmit["QuizId"] = this.quizId;
     formToSubmit["QuestionsAndOptions"] = this.selectedOptions;
-   console.log(formToSubmit)
+    console.log(formToSubmit)
 
-
-  this._manageCoursesService.submitOnborderQuiz(formToSubmit, this.onboarderid)
-  .subscribe(event => {
-    if (event.type === HttpEventType.Sent) {
-      this._ngxSpinner.show();
-    }
-    if (event.type === HttpEventType.Response) {
-      this._ngxSpinner.hide();
-      this.openSnackBar("Success!","You passed", 3000);
-      //add router
-      
-    }
-  },
-    error => {
-      this._ngxSpinner.hide();
-      this.openSnackBar("Message:", error.error.message, 3000);
-
-    });
-}
+    this._manageCoursesService.submitOnborderQuiz(formToSubmit, this.onboarderid)
+      .subscribe(event => {
+        if (event.type === HttpEventType.Sent) {
+          this._ngxSpinner.show();
+        }
+        if (event.type === HttpEventType.Response) {
+          this.quizSubmitted = true;
+          this.quizPassed = true;
+          this._ngxSpinner.hide();
+          this.openSnackBar("Success!", "Quiz Passed, navigate to achievements", 4000)
+        }
+      },
+        error => {
+          this._ngxSpinner.hide();
+          this.quizFailed = true;
+          this.quizSubmitted = true;
+          this.alertService.error(error.error.message);
+        });
+  }
 
 
   private openSnackBar(message: string, action: string, _duration: number) {
@@ -131,6 +128,14 @@ courseid!:number;
       duration: _duration,
       verticalPosition: 'top'
     });
+  }
+
+  onGoToAchievements() {
+    this._router.navigate(['progress', this.courseid])
+  }
+
+  ongoToCourses() {
+    this._router.navigate(['take_course'])
   }
 
 }

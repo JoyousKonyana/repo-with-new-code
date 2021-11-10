@@ -6,13 +6,18 @@ namespace BMW_ONBOARDING_SYSTEM.Dtos
 {
     public class GetQuizDetailsDto
     {
-
         public int Id { get; set; }
+        public int CourseId { get; set; }
+        public string CourseName { get; set; }
+
+        public int LessonId { get; set; }
+        public string LessonName { get; set; }
+
+        public int LessonOutcomeId { get; set; }
+        public string LessonOutcomeName { get; set; }
 
 
         public string Name { get; set; }
-
-
         public string DueDate { get; set; }
 
 

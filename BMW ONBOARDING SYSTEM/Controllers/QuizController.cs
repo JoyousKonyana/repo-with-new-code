@@ -26,7 +26,7 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
         }
 
         [HttpPost("Add")]
-        public IActionResult AddLessonOutcomeQuiz([FromBody]AddLessonOutcomeQuizDto model)
+        public IActionResult AddLessonOutcomeQuiz([FromBody] AddLessonOutcomeQuizDto model)
         {
             var message = "";
             if (!ModelState.IsValid)
@@ -36,7 +36,7 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
             }
 
             var isBankInDb = _context.QuestionBank
-                .FirstOrDefault(item => item.Id == model.QuestionBankId); 
+                .FirstOrDefault(item => item.Id == model.QuestionBankId);
 
             if (isBankInDb == null)
             {
@@ -46,8 +46,8 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
 
 
             var isOutcomeInDb = _context.LessonOutcome
-                .Include(item=>item.Lesson)
-                .ThenInclude(item=>item.Course)
+                .Include(item => item.Lesson)
+                .ThenInclude(item => item.Course)
                 .FirstOrDefault(item => item.LessonOutcomeID == Convert.ToInt32(model.OutcomeId));
 
             if (isOutcomeInDb == null)
@@ -108,8 +108,8 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
         public ActionResult<IEnumerable<GetLessonOutcomeQuizDto>> GetAllLessonOutcomeQuizzes()
         {
             var quizzesInDb = _context.Quizzes
-                .Include(item=>item.Questions)
-                .ThenInclude(item=>item.Options)
+                .Include(item => item.Questions)
+                .ThenInclude(item => item.Options)
                 .Include(item => item.LessonOutcome)
                 .Include(item => item.QuestionBank)
                 .Select(item => new GetLessonOutcomeQuizDto
@@ -166,14 +166,22 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
         {
             var quiz = _context.Quizzes
                 .Where(item => item.Id == quizId)
+                .Include(item => item.LessonOutcome)
+                .ThenInclude(item => item.Lesson)
+                .ThenInclude(item => item.Course)
                 .Include(item => item.Questions)
                 .ThenInclude(item => item.Options)
-                .Include(item => item.QuestionBank)
                 .Select(item => new GetQuizDetailsDto()
                 {
                     Id = item.Id,
                     Name = item.Name,
                     DueDate = item.DueDate.ToString("dd/MM/yyyy"),
+                    LessonOutcomeId = item.LessonOutcome.LessonOutcomeID,
+                    LessonOutcomeName = item.LessonOutcome.LessonOutcomeName,
+                    LessonId = item.LessonOutcome.Lesson.LessonID,
+                    LessonName = item.LessonOutcome.Lesson.LessonName,
+                    CourseId = item.LessonOutcome.Lesson.Course.CourseID,
+                    CourseName = item.LessonOutcome.Lesson.Course.CourseName,
                     Questions = item.Questions
                         .Select(question => new GetQuizQuestionDto
                         {
@@ -207,10 +215,9 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
             }
 
 
-
             var quizInDb = _context.Quizzes
-                .Include(item => item.QuestionBank)
-                .ThenInclude(item => item.Questions)
+                .Include(item => item.Questions)
+                .ThenInclude(item => item.Options)
                 .Include(item => item.LessonOutcome)
                 .ThenInclude(item => item.Lesson)
                 .ThenInclude(item => item.Course)
@@ -222,33 +229,40 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
                 return BadRequest(new { message });
             }
 
-            var quizBankId = quizInDb.QuestionBankId;
+            if (quizInDb.Questions.Count != model.QuestionsAndOptions.Count)
+            {
+                message = "Reload page and answer all questions";
+                return BadRequest(new { message });
+            }
 
-            var questionBank = _context.QuestionBank
-                .Include(item => item.Questions)
-                .FirstOrDefault(item => item.Id == quizBankId);
+            var quizAlreadyPassed = _context.Achievements
+                .Where(item => item.OnboarderId == onboarderid)
+                .FirstOrDefault(item => item.CourseId == quizInDb.LessonOutcome.Lesson.Course.CourseID);
 
+            if (quizAlreadyPassed != null)
+            {
+                message = "Quiz already and achieved recorded on: " + quizAlreadyPassed.DateAchieved.ToString("dd/MM/yyyy hh:mm");
+                return BadRequest(new { message });
+            }
 
-            var count = 0;
-            foreach (var question in questionBank.Questions)
+            var currentCount = 0;
+            foreach (var question in quizInDb.Questions)
             {
 
                 foreach (var questionQuiz in model.QuestionsAndOptions)
                 {
 
-
-
                     if (question.Id == questionQuiz.QuestionId)
                     {
-                        var correctOptions = _context.QuestionAnswerOptions
-                            .Where(item => item.QuestionId == questionQuiz.QuestionId)
+                        var correctOptions = _context.QuizQuestionOptions
+                            .Where(item => item.QuizQuestionId == questionQuiz.QuestionId)
                             .ToList();
 
                         foreach (var optionFromDb in correctOptions)
                         {
                             if (questionQuiz.OptionId == optionFromDb.Id && optionFromDb.IsOptionAnswer)
                             {
-                                count += 1;
+                                currentCount += 1;
                             }
 
                         }
@@ -257,45 +271,40 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
                 }
             }
 
-            //var OnberderPercentage = (count / model.QuestionsAndOptions.Count) * 100;
+            var onBorderPercentage = Convert.ToDecimal(currentCount) / Convert.ToDecimal(quizInDb.Questions.Count) * 100;
 
-            //if (OnberderPercentage < quizInDb.PassMarkPercentage)
-            //{
-            //    message = "You did not meet the minimum mark required to pass.";
-            //    return BadRequest(new { message });
-            //}
-            //if (OnberderPercentage >= quizInDb.PassMarkPercentage)
-            //{
-            //    var onboarderAchivement = new Achievement()
-            //    {
-            //        CourseId = quizInDb.LessonOutcome.Lesson.CourseID,
-            //        OnboarderId = onboarderid,
-            //        MarkAchieved = OnberderPercentage,
-            //        AchievementDate = DateTime.Now,
-            //        AchievementTypeId = 1,
-            //        QuizId = quizInDb.Id
+            if (onBorderPercentage < 50)
+            {
+                message = "You failed. Your score: " + onBorderPercentage + "% is lower than 50%";
+                return BadRequest(new { message });
+            }
+            if (onBorderPercentage >= 50)
+            {
+                var type = _context.AchievementTypes
+                    .FirstOrDefault(item => onBorderPercentage >= Convert.ToDecimal(item.MinMark) && onBorderPercentage <= Convert.ToDecimal(item.MaxMark));
 
-            //    };
-            //    _context.Achievement.Add(onboarderAchivement);
-            //    _context.SaveChanges();
-            //}
+                if (type ==null)
+                {
+                    message = "Badge not found";
+                    return BadRequest(new { message });
+                }
+
+                var newAchievement = new Achievement()
+                {
+                    AchievementTypeId = type.Id,
+                    OnboarderId = onboarderid,
+                    CourseId = quizInDb.LessonOutcome.Lesson.Course.CourseID,
+                    MarkAchieved = Convert.ToDouble(onBorderPercentage),
+                    DateAchieved = DateTime.Now,
+                    QuizId = quizInDb.Id,
+                };
+                _context.Achievements.Add(newAchievement);
+                _context.SaveChanges();
+            }
 
             return Ok();
 
         }
 
-
-        //public static void Shuffle<T>(IList<T> list)
-        //{
-        //    int n = list.Count;
-        //    while (n > 1)
-        //    {
-        //        n--;
-        //        int k = rng.Next(n + 1);
-        //        T value = list[k];
-        //        list[k] = list[n];
-        //        list[n] = value;
-        //    }
-        //}
     }
 }

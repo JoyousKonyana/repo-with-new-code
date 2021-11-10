@@ -95,4 +95,9 @@ export class ManageCoursesService {
       payload,
       { reportProgress: true, observe: 'events' });
   }
+
+  getOnborderAchievementsByCourse(onBorderId:any, courseId:any) {
+    return this._httpClient.get(this.endpointBase.concat("Achievements/Onborder/"+onBorderId + "/"+courseId),
+      { reportProgress: true, observe: 'events' });
+  }
 }
