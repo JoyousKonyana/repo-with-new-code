@@ -101,7 +101,7 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
                 {
                     Id = item.Id,
                     Badge = item.AchievementType.Name,
-                    Mark = item.MarkAchieved,
+                    Mark = item.MarkAchieved.ToString("0.00"),
                     Date = item.DateAchieved.ToString("dd/MM/yyyy"),
                     
                     QuizId = item.Quiz.Id,

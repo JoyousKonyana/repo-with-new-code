@@ -237,7 +237,7 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
 
             var quizAlreadyPassed = _context.Achievements
                 .Where(item => item.OnboarderId == onboarderid)
-                .FirstOrDefault(item => item.CourseId == quizInDb.LessonOutcome.Lesson.Course.CourseID);
+                .FirstOrDefault(item => item.QuizId == quizInDb.Id);
 
             if (quizAlreadyPassed != null)
             {

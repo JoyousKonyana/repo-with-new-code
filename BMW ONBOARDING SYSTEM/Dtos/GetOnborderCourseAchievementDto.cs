@@ -16,7 +16,7 @@
         public int QuizId { get; set; }
         public string QuizName { get; set; }
 
-        public double Mark { get; set; }
+        public string Mark { get; set; }
         public string Badge { get; set; }
         public string Date { get; set; }
     }
