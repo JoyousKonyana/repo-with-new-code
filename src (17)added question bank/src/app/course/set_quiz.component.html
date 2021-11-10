@@ -1,7 +1,13 @@
 <div class="AddEmployeeTitleContainer">
   <div class="addEmployeeTitleContainer">
-    <div>
-      [Couse]>> [Lesson] >>[Lesson Outcome] >> Quizzez
+
+    <div class="add-new-container">
+      <div class="page-title" *ngIf="quizzes.length >0">
+        {{quizzes[0].courseName}} ▶ {{quizzes[0].lessonName}} ▶ {{quizzes[0].lessonOutcomeName}} ▶ Quizzez
+      </div>
+      <div class="page-title" *ngIf="quizzes.length ==0">
+        No Quizzes found
+      </div>
     </div>
     <br />
     <div class="btn btn-primary" (click)="addNewQuizBtn()">

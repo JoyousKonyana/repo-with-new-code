@@ -126,3 +126,4 @@ C:\Users\mankg\Desktop\XYZ\Group 14\repo-with-new-code\BMW ONBOARDING SYSTEM\obj
 C:\Users\mankg\Desktop\XYZ\Group 14\repo-with-new-code\BMW ONBOARDING SYSTEM\obj\Debug\netcoreapp3.1\BMW ONBOARDING SYSTEM.dll
 C:\Users\mankg\Desktop\XYZ\Group 14\repo-with-new-code\BMW ONBOARDING SYSTEM\obj\Debug\netcoreapp3.1\BMW ONBOARDING SYSTEM.pdb
 C:\Users\mankg\Desktop\XYZ\Group 14\repo-with-new-code\BMW ONBOARDING SYSTEM\obj\Debug\netcoreapp3.1\BMW ONBOARDING SYSTEM.genruntimeconfig.cache
+C:\Users\mankg\Desktop\XYZ\Group 14\repo-with-new-code\BMW ONBOARDING SYSTEM\obj\Debug\netcoreapp3.1\BMW ONBOARDING SYSTEM.csproj.AssemblyReference.cache

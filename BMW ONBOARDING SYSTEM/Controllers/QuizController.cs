@@ -142,6 +142,8 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
             var quizzesInDb = _context.Quizzes
                 .Where(item => item.LessonOutcomeID == lessonOutcomeId)
                 .Include(item => item.LessonOutcome)
+                .ThenInclude(item=>item.Lesson)
+                .ThenInclude(item=>item.Course)
                 .Include(item => item.QuestionBank)
                 .Select(item => new GetLessonOutcomeQuizDto
                 {
@@ -152,7 +154,12 @@ namespace BMW_ONBOARDING_SYSTEM.Controllers
                     QuestionBankName = item.QuestionBank.Name,
                     LessonOutcomeId = item.LessonOutcome.LessonOutcomeID,
                     LessonOutcomeName = item.LessonOutcome.LessonOutcomeName,
-                    NumberOfQuestions = item.Questions.Count()
+                    NumberOfQuestions = item.Questions.Count(),
+
+                    CourseId = item.LessonOutcome.Lesson.Course.CourseID,
+                    CourseName = item.LessonOutcome.Lesson.Course.CourseName,
+                    LessonId = item.LessonOutcome.Lesson.LessonID,
+                    LessonName = item.LessonOutcome.Lesson.LessonName,
 
                 }).ToList();
 

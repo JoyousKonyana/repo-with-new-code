@@ -49,6 +49,11 @@ export interface N_Quiz {
   lessonOutcomeName: string,
   questionBankId: number,
   questionBankName: string,
+
+  courseId:number,
+  courseName:string,
+  lessonId:number,
+  lessonName:string
 }
 export interface N_Enrollement {
   id: number,
